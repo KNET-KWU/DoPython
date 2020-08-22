@@ -19,30 +19,18 @@ make them usable as simple coroutines.  It is basically a combination of ideas
 from these two PEPs, which may be considered redundant if this PEP is
 accepted:
 
-이 PEP은 제너레이터(generator)의 API와 문법(syntax)을 간단한 코루틴과 같이 사용 가능하도록 제안합니다. 
-기본적으로 다음 두 가지의 PEP의 개념을 조합한 것입니다, 그래서 이 PEP이 승낙된다면 중복이 될 수 있겠네요:
-
 - PEP 288, Generators Attributes and Exceptions.  The current PEP covers its
   second half, generator exceptions (in fact the ``throw()`` method name was
   taken from PEP 288).  PEP 342 replaces generator attributes, however, with a
   concept from an earlier revision of PEP 288, the *yield expression*.
 
--  PEP 288,  제너레이터의 속성(Attributes)과 예외(Exceptions).
-   PEP 288의 절반의 뒷 부분(제너레이터의 예외)을 다루고 있습니다, 사실 여기서 ``throw()`` 매서드 이름을 여기서 따왔습니다.
-   현재 작성하는 PEP에서는 제너레이터 속성을 대체하는 것을 제안합니다, 초기 PEP 288 개정판의 컨셉 *yield expression*과 함께요.
-
 - PEP 325, Resource-Release Support for Generators.  PEP 342 ties up a few
   loose ends in the PEP 325 spec, to make it suitable for actual
   implementation.
 
--  PEP 325, 제너레이터를 위한 리소스-해제(Resource-Release) 지원,
-   현재 작성하는 PEP에서는 PEP 325에서 모호하게 다룬 내용을 명확하게 정리하여, 실제로 구현을 하기 위한 기반을 마련합니다. 
 
 Motivation
 ==========
-
-동기
-====
 
 Coroutines are a natural way of expressing many algorithms, such as
 simulations, games, asynchronous I/O, and other forms of event-driven
@@ -53,12 +41,6 @@ when execution resumes.  They also do not allow execution to be paused within
 the ``try`` portion of ``try/finally`` blocks, and therefore make it difficult
 for an aborted coroutine to clean up after itself.
 
-코루틴(Coroutines)은 많은 알고리즘을 표현할 수 있는 자연스러운 방법입니다.
-예를 들어 시뮬레이션, 게임, 비동기 입출력, 그리고 이벤트-주도(event-driven) 프로그래밍 또는 협동적 멀티테스킹이 있습니다.
-값(value)을 산출하기 위해서 실행을 잠시 중단하는게 가능한다는 점에서 -- 정확히는 아니지만 -- 파이썬의 제너레이터 함수는 거의 코루틴입니다.
-다만, 중단된 실행을 다시 되돌릴 때 값이나 예외(exception)를 전달하지 못합니다.
-현재의 제네레이터 함수는 ``try/finally`` 블럭의 ``try`` 부분에서 실행을 중단시킬 수 없어서, 문제가 생긴 코루딘이 스스로 정리할 수 있는 방법을 구현할 수도 없었습니다.
-
 Also, generators cannot yield control while other functions are executing,
 unless those functions are themselves expressed as generators, and the outer
 generator is written to yield in response to values yielded by the inner
@@ -68,13 +50,6 @@ requires the generator to *block* (i.e. be unable to yield control), or else a
 lot of boilerplate looping code must be added around every needed function
 call.
 
-그리고, 제너레이터는 다른 함수가 실행중일 때 제어권(control)를 양도(yield)할 수 없습니다, 그 다른 함수가 제너레이터가 아니거나
-내부의 제너레이터(inner generator)에 의해 양도된 값이 외부의 제너레이터(outer generator)에 의해 응답(response - callback?)양도되도록 작성되지 않는 경우에 말이죠.
-이러한 특징 때문에 간단한 비동기 통신 조차 구현하는데 문제를 일으킵니다.
-왜냐하면 다른 함수를 호출하려면 제네레이터를 *블럭(block)* 한 뒤에 계속 실행하거나(제어권을 양도할 수 없어서), 엄청나게 많은 루프로 이루어진 코드를 작성해야하기 때문입니다(콜백지옥).
-
-# !!!!!! 위에서 말한 inner gennerator , outer generator 예시 찾아보기 !!!!!!!
-
 However, if it were possible to pass values or exceptions *into* a generator at
 the point where it was suspended, a simple co-routine scheduler or *trampoline
 function* would let coroutines *call* each other without blocking -- a
@@ -83,19 +58,10 @@ write co-routines to do non-blocking socket I/O by yielding control to an I/O
 scheduler until data has been sent or becomes available.  Meanwhile, code that
 performs the I/O would simply do something like this::
 
-그러나, 값이나 예외를 제너레이터가 중단된 지점으로 전달할 수 있다면, 간단한 코루틴 스케쥴러(scheduler) 또는 트램펄린(trampoline) 함수를 블락 없이 코루틴을 서로 호출할 수 있었을 겁니다 -- 비동기 애플리케이션을 위한 엄청난 혜택이겠죠. 
-이러한 애플리케이션은 그러면 I/O 스케줄러에 제어권을 양도하면서 데이터가 모두 송신되거나 유효할 때 논블럭킹(non-blocking) 소켓 I/O를 사용할 수 있는 코루틴을 작성할 수 있겠죠.
-이런게 구현되기 전에 I/O를 구현했던 코드는 다음과 같이 비슷하게 했겠죠 :: 
-
-
-    data = (yield nonblocking_read(my_socket, nbytes))
-    
     data = (yield nonblocking_read(my_socket, nbytes))
 
 in order to pause execution until the ``nonblocking_read()`` coroutine produced
 a value.
-
-실행을 ``nonblocking_read()`` 까지 중단시키기 위해서는 코루틴은 값을 산출했습니다.
 
 In other words, with a few relatively minor enhancements to the language and to
 the implementation of the generator-iterator type, Python will be able to
@@ -108,11 +74,6 @@ requiring any significant modification to the CPython core or its APIs.  In
 addition, these enhancements should be readily implementable by any Python
 implementation (such as Jython) that already supports generators.
 
-다르게 표현하자면, 몇가지 사소한 발전과 제너레이터-이터레이터(generator-iterator) 타입의 구현만 이루어진다면, 파이썬은 콜백 지옥과 수백 수천개의 동작하는 멀티태스킹 슈도스레드(co-operatively multitasking pseudothreads)를 이용하는 끔찍한 스레드 구조 없이 비동기 작업을 지원할 수 있을 겁니다.
-따라서, 이러한 발전은 CPython의 코어 또는 API의 큰 수정 없이도, 파이썬의 파생형(Stackless Python fork)의 장점들을 표준 파이썬에서도 쓸 수 있게 만들어 줄 겁니다.
-추가로, 이러한 발전은 이미 제너레이터를 지원하는 모든 파이썬 확장형(예 : Java + Python : Jython)에 또한 즉시 구현될 수 있을 겁니다.
-
-### !!!!! Stackless Python fork 이 뭐지? !!!!!!
 
 Specification Summary
 =====================
