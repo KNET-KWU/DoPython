@@ -3,7 +3,7 @@
 
 ## 목차
 
-* 번역
+* 파이썬 공식 문서 - 한글(번역)
 
 * 사용 예시
 
@@ -11,9 +11,9 @@
 
     * 잘못된 사용법 (2) - 의도와 다른 객체지향적 코드
     
-* 원문
+* 파이썬 공식 문서 - 영어(원문)
 
-## 번역
+## 파이썬 공식 문서 - 한글(번역)
 
 ```python
 class type(object)
@@ -189,7 +189,7 @@ greetingsHuman(ccppoo)  # TypeError : Student is not a Human!
         man.sayHi()
 ```
 
-## 원문
+## 파이썬 공식 문서 - 영어(원문)
 
 With one argument, return the type of an object.<br> The return value is a type object and generally the same object as returned by object.\_\_class\_\_.
 
@@ -214,8 +214,8 @@ Types are written like this: \<class \'int\'\>.
 
 ##### [1] \_\_main\_\_ 
 
-\_\_main\_\_처럼 앞에 붙은 것은 클래스가 위치해 있는 파일을 의미한다.
+\_\_main\_\_처럼 앞에 붙은 것은 클래스가 위치해 있는 파일을 의미합니다.
 
 \_\_main\_\_은 현재 실행하고 있는 스크립트를 의미하며, 현재 스크립트 외에 import 된 클래스의 경우
 
-예를 들어 scriptName.py에 있는 클래스 A를 import 한 뒤 type(a)를 출력하는 경우 \<class \'scriptName.A\'\>와 같이 표시된다.
+예를 들어 scriptName.py에 있는 클래스 A를 import 한 뒤 type(a)를 출력하는 경우 \<class \'scriptName.A\'\>와 같이 출력됩니다.
