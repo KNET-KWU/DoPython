@@ -141,7 +141,7 @@ for n, val in enumerate(mappedValue):
 
 ### starmap
 
-starmap의 원형은 다음과 같습니다 (파이썬 공식 문서)
+starmap의 원형은 다음과 같이 작동합니다(파이썬 공식 문서)
 
 ```python
 # 제너레이터 객체 반환
