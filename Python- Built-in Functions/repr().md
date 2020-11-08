@@ -8,15 +8,13 @@ repr은 representation의 줄임말로 `묘사하다, 대표하다` 의미를 �
 
     * \_\_repr\_\_() 직접 구현해보기
 
-    * \_\_repr\_\_() 재정의 하기
+    * \_\_repr\_\_() 재정의 하기 - 클래스를 정의할 때 꼭 해주는 습관을 가집시다!
 
 * 파이썬 공식 문서 - 영어(원문)
 
 ## 파이썬 공식 문서 - 한글(번역)
 
 repr(object)
-
-Return a string containing a printable representation of an object. 
 
 객체에 대한 표현을 문자열로 반환합니다.
 
@@ -33,8 +31,6 @@ name = 'ccppoo'
 print(name.__repr__()) # 'ccppoo'
 print(name) # 'ccppoo'
 ```
-
-For many types, this function makes an attempt to return a string that would yield an object with the same value when passed to eval(), otherwise the representation is a string enclosed in angle brackets that contains the name of the type of the object together with additional information often including the name and address of the object. 
 
 대부분의 경우, ``__repr__()`` 는 객체를 `eval()` 함수에 인자로 넣을 때 반환하는 문자열과 동일하게 반환하려고 시도합니다.
 
@@ -117,7 +113,7 @@ print(dummy)
 >>> <__main__.D object at 0x11623a7f0>
 ```
 
-### \_\_repr\_\_() 재정의 하기
+### \_\_repr\_\_() 재정의 하기 - 클래스를 정의할 때 꼭 해주는 습관을 가집시다!
 
 ```
 # __repr__를 재정의하지 않고 객체를 출력한 결과
