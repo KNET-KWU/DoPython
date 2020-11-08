@@ -27,8 +27,6 @@ type(bin(10))   # <class 'str'>
 '0b1010' + '0b1010' # '0b10100b1010'
 ```
 
-If x is not a Python [int](https://docs.python.org/3/library/functions.html#int) object, it has to define an [\_\_index\_\_()](https://docs.python.org/3/reference/datamodel.html#object.__index__) method that returns an integer.
-
 bin(x) 메서드 첫번째 인자 `x`가 파이썬 정수([int](https://docs.python.org/3/library/functions.html#int)가 아닌 객체의 경우,<br>
 정수를 반환하는 [\_\_index\_\_()](https://docs.python.org/3/reference/datamodel.html#object.__index__) 메서드가 정의되어야 합니다.
 
