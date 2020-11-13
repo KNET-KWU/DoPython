@@ -16,6 +16,8 @@
 
 * 파이썬 공식 문서 - 영어(원문)
 
+<br>
+
 ## 파이썬 공식 문서 - 한글(번역)
 
 `sum(iterable, /, start = 0)`
@@ -23,7 +25,11 @@
 `sum()` 메서드의 두번째 인자 *start*를 시작으로 첫번째 인자인 *iterable*의 모든 요소를 더한 값을 반환합니다.
 
 ```python
-# 3번째 인자부터 끝까지 더한 것
+# 이 코드와 같이 작동합니다
+def sum(iter, start = 0):
+    for it in iter:
+        start += it
+    return start
 
 sum([0,1,2,3,4,5])   # 15
 
@@ -34,9 +40,13 @@ sum([0,1,2,3,4,5], 3)   # 18
 
 정수 타입 외에 다른 타입도 sum으로 쓸 수 있는 방식은 아래에 설명되어 있습니다.
 
+<br>
+
 ### sum()은 정수 더할 때 쓰자...
 
 `sum()`은 정수뿐만 아니라, 실수, 문자열에도 쓸 수 있지만 더 나은 대안이 존재합니다.
+
+<br>
 
 #### 문자열(str) 더하기
 
@@ -58,6 +68,8 @@ sum([0,1,2,3,4,5], 3)   # 18
 
 문자열을 더할 땐 `+`를 사용할 수 있지만, 문자열 이터러블의 경우 join을 사용하는 것을 권장드립니다.
 
+<br>
+
 #### 실수(float) 더하기
 
 여러개의 **실수**를 더하는 경우 더 나은 정교함을 위해서 [math.fsum()](https://docs.python.org/3/library/math.html#math.fsum)을 사용하는것을 권장드립니다.
@@ -73,6 +85,8 @@ math.fsum(floats)   # 1.0
 ```
 
 예시를 보면 왜 fsum을 써야하는지 알겠죠?
+
+<br>
 
 #### 이터러블(iterable) 합치기
 
@@ -140,6 +154,8 @@ for x in items:
 # list로 새로 생성한 뒤 사용합니다
 items = list(chain(['Hello', 'my', 'name'], ['is', 'ccppoo']))
 ```
+
+<br>
 
 ### 내가 만든 클래스 sum() 사용할 수 있게 만들기 - \_\_add\_\_(), \_\_radd\_\_()
 
@@ -209,6 +225,8 @@ sum([1,2,3,4,5], start = 10)    # TypeError: sum() takes no keyword arguments
 # 파이썬 버전 3.8 이후
 sum([1,2,3,4,5], start = 10)    # 25
 ```
+
+<br>
 
 ## 파이썬 공식 문서 - 영어(원문)
 
