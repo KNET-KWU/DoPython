@@ -49,7 +49,9 @@ callable(MyType)    # True
 
 ## callable는 무엇일까
 
+CPython으로 따지면 tp_call 포인터가 Null인 아닌 경우,
 
+파이썬으로 따지면 함수처럼 쓸 수 있는 `MyMethod()` 것이라고 보시면 됩니다.
 <br>
 
 ## callable가 True를 반환하는 경우
@@ -99,7 +101,57 @@ PyCallable_Check(PyObject *x)
 
 ### callable가 True를 반환했지만 호출이 실패하는 경우
 
+여러분이 실제로 `callable` 메서드가 True를 반환했는데 호출(call)에 실패할 확률은 매우 낮습니다.
 
+굳이 일부러 할 확률은 매우 낮을 뿐더러 우리가 일반적으로 사용하는 패턴과 매우 다르기 때문이죠.
+
+예시를 보시면 한번에 납득이 되실 겁니다.
+
+```python
+# callable 메서드가 True를 반환하지만 실제로 호출이 실패하는 경우
+
+class MyClass:
+    
+    @classmethod
+    def c_method(*args):
+        print('class method')
+        
+    @staticmethod
+    def s_method(*args):
+        print('static method')
+
+# ----------- classmethod case ------------- #
+        
+callable(MyClass.c_method)    # True
+     
+MyClass.c_method()    # class method
+              
+callable(MyClass.__dict__['c_method'])  # False
+
+MyClass.__dict__['c_method']()    # TypeError: 'classmethod' object is not callable
+
+# ----------- staticmethod case ------------- #
+
+callable(MyClass.s_method)    # True
+     
+MyClass.s_method()    # static method
+              
+callable(MyClass.__dict__['s_method'])  # False
+
+MyClass.__dict__['s_method']()    # TypeError: 'staticmethod' object is not callable
+```
+
+[파이썬 버그 이슈 #20309](https://bugs.python.org/issue20309)에서 논의 되어있는 것을 정리하자면
+
+1. 위와 같이 메서드를 사용하는 패턴이 잘 사용하지 않는 패턴이라 나중에 추가로 유지보수할 필요성이 낮다(중요한 거 아닌건 일 늘리지 말자).
+
+2. 클래스의 \_\_dict\_\_ 참조하는 cpython 구현부는 당시 귀도(파이썬 창시)가 한번에 작성했는데, 
+이렇게 파이썬을 작성했는데, 이렇게 작동하도록 썼을 이유가 나름대로 있을거다.<br>
+- 파이썬의 주요 기여자(Raymond Hettinger) 커멘트 중 -
+
+라는 이유로 위와 같은 현상에 대해서 더이상 논하지 않게 되었습니다(현행유지).
+
+크게 중요한 내용은 아니고 흔히 접하는 경우가 아니므로 이런 예외 정도가 있다~ 라는 정도만 알고 계시면 되겠습니다.
 
 ## callable가 False를 반환하는 경우
 
