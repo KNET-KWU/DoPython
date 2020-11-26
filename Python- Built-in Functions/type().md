@@ -73,6 +73,8 @@ types 객체(예: <class 'int'>)는 보여주는 것 외에 특별한 메서드�
 타입은 다음과 같이 표시됩니다: type(123) # <class 'int'>
 ```
 
+---------
+
 python 3.6 변경사항: 
 
 `type` 클래스를 상속받는 서브클래스 중, type.\_\_new\_\_ 메서드를 오버라이딩하지 않는 클래스의 경우,
@@ -136,8 +138,8 @@ elif type_ is str:
 
 ```python
 def add(a : int, b : int):
-    if type(a) is int or type(b) is int:
-        riase TypeError("only int arguments are allowed")
+    if type(a) is not int or type(b) is not int:
+        raise TypeError("only int arguments are allowed")
     return a + b
 ```
 
