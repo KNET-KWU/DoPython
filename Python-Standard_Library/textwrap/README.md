@@ -26,6 +26,8 @@ textwrap 모듈은 런타임(run-time) 중 보여주는 문서를 더 편리하�
     
     * expand_tabs
     
+    * tabsize
+    
     * replace_whitespace
     
     * drop_whitespace
