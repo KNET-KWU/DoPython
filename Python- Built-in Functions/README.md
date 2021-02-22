@@ -1,37 +1,21 @@
 # Python Built-in Functions
 
-파이썬에 내장된 함수에 대해 분석하는 레포지토리입니다
-
-공식문서를 찾아보면 사용 예시나 설명문이 빈약해서 추가로 블로그를 여러개 찾아본 경험이 있으실 겁니다.
-
-그래서 공식문서와 함께 쓸만한 예시를 작성한 글입니다.
-
-메서드를 소개하는 문서마다, 파이썬 공식 메서드에 대한 설명의 번역과 원문을 첨부해놨습니다.
-
-직접 번역한 내용과 함께 개인적인 설명과 예시를 추가했습니다.
+예시가 필요한 자들을 위하여.. 또는 알아두면 좋은 것들 추가...
 
 ## 목차
 
-* type()
-
-* map()
-
-* id()
-
-* repr()
-
-## type()
-
-파이썬을 사용하면서 같은 타입인지 확인하는 용도로 쓰는 메서드
-
-## map()
-
-for문 대신 깔끔하고, 병렬적이고, 지연 연산을 이용하는 메서드
-
-## id()
-
-객체의 정체성, 메모리 주소를 알려주는 메서드
-
-## repr()
-
-객체의 정체를 알려주는 메서드
+|             |           | Built-in Functions |            |              |
+|:-------------|:-----------|:--------------------|:------------|:--------------|
+| [abs](./abs().md)         | delattr   | hash               | memoryview | set          |
+| all         | dict      | help               | min        | setattr      |
+| any         | dir       | hex                | next       | slice        |
+| bin         | enumerate | input              | oct        | staticmethod |
+| bool        | eval      | int                | open       | str          |
+| breakpoint  | exec      | isinstance         | ord        | sum          |
+| bytearray   | filter    | issubclass         | pow        | super        |
+| bytes       | float     | iter               | print      | tuple        |
+| callable    | format    | len                | property   | type         |
+| chr         | frozenset | list               | range      | vars         |
+| classmethod | getattr   | locals             | repr       | zip          |
+| compile     | globals   | map                | reversed   | \_\_import\_\_   |
+| complex     | hasattr   | max                | round      |              |
