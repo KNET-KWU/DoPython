@@ -1,8 +1,11 @@
+
 # tempfile - 임시파일 만들기
 
 tempfile 모듈은 실제 존재하는 파일처럼 읽기/쓰기가 가능한 임시 파일을 만듭니다.
 
 테스트 용도로 사용되거나, 빠르게 읽기/쓰기가 요구되는 파일의 경우 쓰일 수 있습니다.
+
+함수는 파일을 생성하고, 파일 경로(str)를 반환하는 것
 
 ## 목차
 
@@ -60,23 +63,31 @@ tempfile 모듈은 I/O 작업이 많이 발생하고, 프로세서간에 데이�
 
 간단히 소개한 라이브러리지만, 파이썬 사용자 모두에게 직간접적으로 위협을 가할 수 있는 포텐셜이 있는 라이브러리 같습니다.
 
+메모 - TemporaryFile : rw-(600), mkstemp : rw-(600), mkdtemp : rwx(700)
+
 ## 반복적으로 사용되는 파라미터 
 
-*mode*
+참고 - [기본 내장함수 open()](https://docs.python.org/3/library/functions.html#open)
 
-*buffering*
+*mode* - 파일을 읽는 모드를 의미합니다. 
 
-*encoding* 
+*buffering* - 0은 버퍼링 X, 1은 한 줄마다 버퍼링, 1을 초과하는 자연수는 버퍼의 크기를 의미합니다.
 
-*newline*
+*encoding* - 인코딩 방식을 의미합니다, *mode* 조합식에 바이너리 모드('b')가 포함되면 에러를 던집니다.
 
-*suffix*
+*newline* - 파일을 읽을 때 줄을 나누는 기준입니다. 보통 시스템에 따라서 결정되므로 기본값 `os.linesep`을 이용하는 것이 대부분입니다.
 
-*prefix*
+*errors* - 디코딩할 떄 발생하는 문제를 어떤식으로 대체할지 설정합니다.
 
-*dir*
+`tempfile`에서 쓰이는 파라미터
 
-*errors*
+*suffix* - 접미사, 파일 이름이 뭐로 끝날지 정합니다.
+
+*prefix* - 접두사, 파일 이름이 뭐로 시작할지 정합니다.
+
+*dir* - 실행되는 환경에 따라 임시 파일과 디렉토리가 저장될 위치를 의미합니다.
+
+*text* - 
 
 ## tempfile를 구성하는 요소들
 
@@ -301,11 +312,75 @@ sys.addaudithook(audit_hook)
 
 ***함수로 쓰이는 것들***
 
-### mktemp - 임시 파일 만들기(Deprecated... **하지만..?**)
-
 ### mkstemp - 안전한 방식으로 임시 파일 만들기
 
+가장 안전한 방법으로 임시파일을 생성합니다.
+
+코드가 실행중인 플렛폼에 따라 구현된 [os.O_EXCL](https://docs.python.org/3/library/os.html#os.O_EXCL)과 [os.open()](https://docs.python.org/3/library/os.html#os.open)에 따라 파일을 생성하면서 경합 상태(race condition)는 일어나지 않습니다.<br>
+임시 생성된 파일은 생성된 사용자만 접근/수정 할 수 있으며, 실행 권한은 없습니다.
+
+실제 임시 파일의 권한 : 600 (-rw-------)  [소스코드](https://github.com/python/cpython/blob/30fe3ee6d39fba8183db779f15936fe64cc5ec85/Lib/tempfile.py#L251)
+
+임시파일을 만드는 `TemporaryFile()`와 달리 `mkstemp()`로 생성된 임시파일은 직접 해제해야합니다.
+
+`mkstemp()`는 ,`os.open()`의 반환값, 실행 권한과 **절대 경로**로 이루어진 튜플을 반환합니다.
+
+```python
+from tempfile import mkstemp
+
+permission, abspath = mkstemp()
+
+print(permission)   # 6 (rw-, 110(2진수), 4 + 2 = 6)
+print(abspath)      # (절대 경로)
+```
+
+(**파이썬 버전 >= 3.8**)
+
+`sys` 모듈의 audit이 됩니다.
+
+---------
+
 ### mkdtemp - 안전한 방식으로 임시 디렉토리 만들기
+
+가장 안전한 방법으로 임시디렉토리를 생성합니다.<br>
+임시 생성된 파일은 생성된 사용자만 접근/수정 할 수 있습니다.
+
+똑같이 임시파일을 만드는 `TemporaryDirectory()`와 달리 `mkdtemp()`로 생성된 임시파일은 직접 해제해야합니다. 
+
+```python
+import os
+from tempfile import mkdtemp
+
+a = mkdtemp()
+
+print(os.path.exists(a))    # True
+```
+
+-------
+
+### mktemp - 임시 파일 만들기(Deprecated... **하지만..?**)
+
+`mktemp(suffix='', prefix='tmp', dir=None)`
+
+호출되었을 당시에 존재하지 않는 파일명(문자열)을 반환합니다.<br>
+**임시파일 이름만 반환할 뿐 파일을 생성하지 않습니다**
+
+임시 파일명을 생성하는 횟수(기본값 : 10000) 내에 존재하지 않는 이름을 못 찾는 경우 `FileExistsError`를 던집니다.
+
+```
+import os
+from tempfile import mktemp
+
+a = mktemp()
+
+print(os.path.exists(a))    # False
+```
+
+파이썬 버전 2.3부터 지양(Deprecated)된 함수입니다.
+
+이름을 생성(Generate)하는 과정과 파일을 생성하는 과정이 동기화되어 있지 않기 때문에 그 틈에 보안상 취약점이 발생할 수 있습니다.
+
+그러나 [Github에 직접 이 코드를 검색해봐도](https://github.com/search?l=Python&q=tempfile.mktemp%28&type=Code) 133,000 여개의 코드가 아직도 존재하고, 파이썬의 소스코드에서도 [아직도 사용하는 것](https://github.com/python/cpython/search?q=tempfile.mktemp)을 볼 수 있습니다.
 
 <br>
 
