@@ -1,21 +1,23 @@
 # Python Built-in Functions
 
-예시가 필요한 자들을 위하여.. 또는 알아두면 좋은 것들 추가...
+내장 함수들은 파이썬 그 자체를 설명하는 존재같습니다.
 
-## 목차
+사용 예시를 추가해 나중에 내가 봐도 기억날 수 있도록 작성했습니다.
 
-|             |           | Built-in Functions |            |              |
-|:-------------|:-----------|:--------------------|:------------|:--------------|
-| [abs](./abs().md)         | delattr   | hash               | memoryview | set          |
-| all         | dict      | help               | min        | setattr      |
-| any         | dir       | hex                | next       | slice        |
-| bin         | enumerate | input              | oct        | staticmethod |
-| bool        | eval      | int                | open       | str          |
-| breakpoint  | exec      | isinstance         | ord        | sum          |
-| bytearray   | filter    | issubclass         | pow        | super        |
-| bytes       | float     | iter               | print      | tuple        |
-| callable    | format    | len                | property   | type         |
-| chr         | frozenset | list               | range      | vars         |
-| classmethod | getattr   | locals             | repr       | zip          |
-| compile     | globals   | map                | reversed   | \_\_import\_\_   |
-| complex     | hasattr   | max                | round      |              |
+# Built-in Functions
+
+|                                  |           | Built-in Functions |            |              |
+|:---------------------------------|:-----------|:--------------------|:------------|:--------------|
+| [abs](./abs().md)   | [delattr](./delattr().md)   | [hash](./hash().md)  | [memoryview](./memoryview().md) | [set](./set().md)          |
+| [all](./all().md)   | [dict](./dict().md)      | [help](./help().md)               | [min](./min().md) | [setattr](./setattr().md) |
+| [any](./any().md)   | [dir](./dir().md)       | [hex](./hex().md)  | [next](./next().md) | [slice](./slice().md) |
+| [bin](./bin().md)   | [enumerate](./enumerate().md) | [input](./input().md) | [oct](./oct().md) | [staticmethod](./staticmethod().md) |
+| [bool](./bool().md) | [eval](./eval().md)      | [int](./int().md)                | [open](./open().md) | [str](./str().md)|
+| [breakpoint](./breakpoint().md)  | [exec](./exec().md)     | [isinstance](./isinstance().md) | [ord](./ord().md) | [sum](./sum().md) |
+| [bytearray](./bytearray().md)    | [filter](./filter().md) | [issubclass](./issubclass().md) | [pow](./pow().md) | [super](./super().md) |
+| [bytes](./bytes().md)            | [float](./float().md)     | [iter](./iter().md) | [print](./print().md) | [tuple](./tuple().md) |
+| [callable](./callable().md)      | [format](./format().md)    | [len](./len().md) | [property](./property().md)| [type](./type().md)  |
+| [chr](./chr().md)                | [frozenset](./frozenset().md) | [list](./list().md) | [range](./range().md) | [vars](./vars().md) |
+| [classmethod](./classmethod().md)| [getattr](./getattr().md)   | [locals](./locals().md) | [repr](./repr().md)| [zip](./zip().md)          |
+| [compile](./compile().md)        | [globals](./globals().md)   | [map](./map().md) | [reversed](./reversed().md)| [\_\_import\_\_](./__import__().md) |
+| [complex](./complex().md)        | [hasattr](./hasattr().md)   | [max](./max().md) | [round](./round().md) |              |
